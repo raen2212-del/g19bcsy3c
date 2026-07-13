@@ -5,7 +5,7 @@ namespace App\Http\Requests\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SingupReqest extends FormRequest
+class SendVerificationEmailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,9 @@ class SingupReqest extends FormRequest
      */
     public function rules(): array
     {
-        
         return [
-            
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|max:10|confirmed'
+            'email' => 'required|email|exists:users,email',
+            'callback_url' => 'required|url',
         ];
     }
 }

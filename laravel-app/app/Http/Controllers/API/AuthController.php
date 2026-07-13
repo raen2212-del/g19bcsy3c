@@ -79,38 +79,37 @@ class AuthController extends Controller
         ], 200);
     }
 
-//     function verifyEmail(Request $request)
-//     {
-//         $user = User::findOrFail($request->route('id'));
+    function verifyEmail(Request $request)
+    {
+        $user = User::findOrFail($request->route('id'));
 
-//         if ($user->hasVerifiedEmail()) {
-//             throw ValidationException::withMessages([
-//                 'email' => 'Email is already verified.',
-//             ]);
-//         }
+        if ($user->hasVerifiedEmail()) {
+            throw ValidationException::withMessages([
+                'email' => 'Email is already verified.',
+            ]);
+        }
 
-//         $user->markEmailAsVerified();
+        $user->markEmailAsVerified();
 
-//         return response([
-//             'message' => 'Email verified successfully.'
-//         ], 200);
-//     }
+        return response([
+            'message' => 'Email verified successfully.'
+        ], 200);
+    }
 
-//     function sendVerificationEmail(SendVerificationEmailRequest $request)
-//     {
-//         $user = User::where('email', $request->email)->first();
+    function sendVerificationEmail(SendVerificationEmailRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
 
-//         if ($user->hasVerifiedEmail()) {
-//             throw ValidationException::withMessages([
-//                 'email' => 'Email is already verified.',
-//             ]);
-//         }
+        if ($user->hasVerifiedEmail()) {
+            throw ValidationException::withMessages([
+                'email' => 'Email is already verified.',
+            ]);
+        }
 
-//         $user->sendEmailVerificationNotification($request->callback_url);
+        $user->sendEmailVerificationNotification($request->callback_url);
 
-//         return response([
-//             'message' => 'Verification email resent.'
-//         ], 200);
-//     }
-// }
+        return response([
+            'message' => 'Verification email resent.'
+        ], 200);
+    }
 }
