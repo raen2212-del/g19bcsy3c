@@ -3,31 +3,37 @@ FROM php:8.4-cli
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
-    git unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
-    libjpeg62-turbo-dev libfreetype6-dev default-mysql-client \
+    git \
+    unzip \
+    curl \
+    supervisor \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring bcmath gd zip pcntl \
+    && docker-php-ext-install pdo_mysql mbstring bcmath gd zip pcntl sockets \
     && rm -rf /var/lib/apt/lists/*
 
-# composer
+COPY docker/laravel/*.sh /usr/local/bin/
+
+
+#COPY docker/laravel/supervisord.development.conf /etc/supervisor/conf.d/
+COPY docker/laravel/supervisord.*.conf /etc/supervisor/conf.d/supervisord.development.conf
+
 COPY --from=composer:2.9 /usr/bin/composer /usr/bin/composer
 
-# copy only composer files first (better cache)
-COPY laravel-app/composer.json laravel-app/composer.lock ./
+COPY --from=node:latest /usr/local /usr/local
 
-RUN composer install --no-interaction --prefer-dist
-
-# copy full project
 COPY laravel-app /var/www/html
 
-# permissions (safe version)
-RUN mkdir -p storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage \
+    && chmod +x /usr/local/bin/*.sh
 
-# optional scripts
-COPY docker/laravel/*.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/*.sh
+RUN composer install
 
 EXPOSE 8000
-
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
