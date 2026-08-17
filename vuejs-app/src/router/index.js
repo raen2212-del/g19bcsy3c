@@ -1,3 +1,4 @@
+import Profile from '@/components/auth/Profile.vue';
 import ResetPassword from '@/components/auth/ResetPassword.vue';
 import SetNewPassword from '@/components/auth/SetNewPassword.vue';
 import Signin from '@/components/auth/Signin.vue';
@@ -7,6 +8,12 @@ import VerifyEmail from '@/components/auth/VerifyEmail.vue';
 import GoogleOAuth from '@/components/google-oauth/GoogleOAuth.vue';
 import Dashboard from '@/components/pages/Dashboard.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+
+
+import Navbar from "@/components/includes/Navbar.vue";
+import LeftSidebar from "@/components/includes/LeftSidebar.vue";
+import RightSidebar from "@/components/includes/RightSidebar.vue";
+import Footer from "@/components/includes/Footer.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +28,8 @@ const router = createRouter({
       path: '/signout',
       name: 'auth.signout',
       component: Signout,
+      // This route has no guarded meta because it use for both authenticated and unauthenticated users.
+      // The authentication state will be handled in the Signout component.
     },
     {
       path: '/signup',
@@ -47,7 +56,7 @@ const router = createRouter({
       meta: { guarded: false },
     },
     {
-      path: '/auth/callback',
+      path: '/google/oauth/callback',
       name: 'auth.google.oauth.callback',
       component: GoogleOAuth,
       meta: { guarded: false },
@@ -55,32 +64,32 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard,
+      components: {
+        default: Dashboard,
+        navbar: Navbar,
+        left_sidebar: LeftSidebar,
+        right_sidebar: RightSidebar,
+        footer: Footer,
+      },
+      meta: { guarded: true },
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      components: {
+        default: Profile,
+        navbar: Navbar,
+        left_sidebar: LeftSidebar,
+        right_sidebar: RightSidebar,
+        footer: Footer,
+      },
       meta: { guarded: true },
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/',
+      redirect: '/dashboard',
     }
   ],
-});
+})
 
-// Guard ដែលមានលក្ខខណ្ឌច្បាស់លាស់ ការពារការចេញផ្ទាំងស
-router.beforeEach((to) => {
-  const token = localStorage.getItem('SANCTUM-TOKEN');
-
-  // ១. បើគ្មាន Token ហើយព្យាយាមចូល Dashboard -> រុញទៅ Signin
-  if (to.meta.guarded && !token) {
-    return { name: 'auth.signin' };
-  }
-
-  // ២. បើមាន Token ហើយ ចូលទំព័រ Signin -> រុញទៅ Dashboard
-  if (to.name === 'auth.signin' && token) {
-    return { name: 'dashboard' };
-  }
-
-  // បើគ្មានបញ្ហាទេ ឱ្យ Render Component តាមធម្មតា
-  return true;
-});
-
-export default router;
+export default router

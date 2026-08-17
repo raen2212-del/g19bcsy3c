@@ -2,6 +2,7 @@
     "require": {
         "laravel/sanctum": "^4.3",
         "laravel/octane": "^2.18",
-        "laravel/socialite": "^5.29"
+        "laravel/socialite": "^5.29",
+        "intervention/image": "^4.2"
     }
 }

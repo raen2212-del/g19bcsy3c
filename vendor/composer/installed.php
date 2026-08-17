@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f89814ed6f3f9c481ad820bfb3403cd34fbaf464',
+        'reference' => '901dd208c6dd46e5e3dc5464916fb3c6f1acde9c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f89814ed6f3f9c481ad820bfb3403cd34fbaf464',
+            'reference' => '901dd208c6dd46e5e3dc5464916fb3c6f1acde9c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -366,6 +366,24 @@
             'replaced' => array(
                 0 => 'v13.22.0',
             ),
+        ),
+        'intervention/gif' => array(
+            'pretty_version' => '5.0.1',
+            'version' => '5.0.1.0',
+            'reference' => 'bb395af960deffe64d70c976b4df9283f68e762d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../intervention/gif',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'intervention/image' => array(
+            'pretty_version' => '4.2.0',
+            'version' => '4.2.0.0',
+            'reference' => '830907fc5397dfc2a51a4e90322d586989fc8364',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../intervention/image',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'laminas/laminas-diactoros' => array(
             'pretty_version' => '3.8.0',

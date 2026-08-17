@@ -136,6 +136,8 @@ class ComposerStaticInit19b21fff8d5a641822e8695dec1c544a
         ),
         'I' =>
         array (
+            'Intervention\\Image\\' => 19,
+            'Intervention\\Gif\\' => 17,
             'Illuminate\\Support\\' => 19,
             'Illuminate\\' => 11,
         ),
@@ -418,6 +420,14 @@ class ComposerStaticInit19b21fff8d5a641822e8695dec1c544a
         'Laminas\\Diactoros\\' =>
         array (
             0 => __DIR__ . '/..' . '/laminas/laminas-diactoros/src',
+        ),
+        'Intervention\\Image\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/intervention/image/src',
+        ),
+        'Intervention\\Gif\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/intervention/gif/src',
         ),
         'Illuminate\\Support\\' =>
         array (

@@ -1,25 +1,27 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\GoogleOAuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/signup', [AuthController::class, 'signup']);
-Route::post('/signin', [AuthController::class, 'signin']);
-Route::get('/verify/email/{id}/{hash}', [AuthController::class, 'verifyEmail'])
-    ->middleware('signed')
-    ->name('verify.email');
-Route::post('/send/verification-email', [AuthController::class, 'sendVerificationEmail']);
-Route::post('/send/reset-password-email', [AuthController::class, 'sendResetPasswordEmail']);
-Route::post('/set/new-password', [AuthController::class, 'setNewPassword'])->name('set.new-password');
-
 Route::prefix('google')->group(function () {
-    Route::get('/oauth/redirect', [GoogleOAuthController::class, 'googleOAuthRedirect']);
-    Route::get('/oauth/callback', [GoogleOAuthController::class, 'googleOAuthCallback']);
-    Route::post('/oauth/exchange/token', [GoogleOAuthController::class, 'googleOAuthExchangeToken'])->middleware('auth:sanctum');
+    Route::get('/oauth/redirect', [App\Http\Controllers\API\GoogleOAuthController::class, 'googleOAuthRedirect']);
+    Route::get('/oauth/callback', [App\Http\Controllers\API\GoogleOAuthController::class, 'googleOAuthCallback']);
+    Route::post('/oauth/exchange/token', [App\Http\Controllers\API\GoogleOAuthController::class, 'googleOAuthExchangeToken'])->middleware('auth:sanctum');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/signout', [AuthController::class, 'signout']);
-    Route::get('/verify', [AuthController::class, 'verify']);
+    Route::post('/signout', [App\Http\Controllers\API\AuthController::class, 'signout']);
+    Route::get('/verify', [App\Http\Controllers\API\AuthController::class, 'verify']);
+    Route::put('/create/password', [App\Http\Controllers\API\AuthController::class, 'createPassword']);
+    Route::put('/change/password', [App\Http\Controllers\API\AuthController::class, 'changePassword']);
+    Route::put('/update/profile-image', [App\Http\Controllers\API\AuthController::class, 'updateProfileImage']);
+    Route::delete('/delete/profile-image', [App\Http\Controllers\API\AuthController::class, 'deleteProfileImage']);
+
+    Route::middleware('admin')->prefix('users')->group(function () {
+        
+        Route::get('/', [App\Http\Controllers\API\UserController::class, 'getUsers']); 
+        Route::get('/read/{id}', [App\Http\Controllers\API\UserController::class, 'readUser']);
+        Route::post('/create', [App\Http\Controllers\API\UserController::class, 'createUser']);
+        Route::put('/update/{id}', [App\Http\Controllers\API\UserController::class, 'updateUser']);
+        Route::delete('/delete/{id}', [App\Http\Controllers\API\UserController::class, 'deleteUser']);
+    });
 });
